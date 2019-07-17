@@ -91,7 +91,13 @@
     return button;
   }
 
-  this.Header = function Header({ onAddTab, onCancel }) {
+  this.Header = function Header({
+    onAddTab,
+    onCancel,
+    onReload,
+    onPrevious,
+    onForward,
+  }) {
     // https://gjs-docs.gnome.org/gtk30~3.24.8/gtk.headerbar
     const titlebar = new HeaderBar({
       title: "Gigagram",
@@ -101,14 +107,37 @@
     const stack = new Stack();
     stack.set_transition_type(StackTransitionType.CROSSFADE);
 
+    const box = new Box();
+    stack.add_named(box, "tabs");
     const addTabButton = Button.new_from_icon_name(
       "tab-new-symbolic",
       IconSize.BUTTON
     );
+    box.add(addTabButton);
     addTabButton.set_label("Add");
     addTabButton.set_always_show_image(true);
     addTabButton.connect("clicked", onAddTab);
-    stack.add_named(addTabButton, "tabs");
+
+    const reloadButton = Button.new_from_icon_name(
+      "view-refresh-symbolic",
+      IconSize.BUTTON
+    );
+    box.add(reloadButton);
+    reloadButton.connect("clicked", onReload);
+
+    const backButton = Button.new_from_icon_name(
+      "go-previous-symbolic",
+      IconSize.BUTTON
+    );
+    box.add(backButton);
+    backButton.connect("clicked", onPrevious);
+
+    const forwardButton = Button.new_from_icon_name(
+      "go-next-symbolic",
+      IconSize.BUTTON
+    );
+    box.add(forwardButton);
+    forwardButton.connect("clicked", onForward);
 
     const cancelButton = Button.new_with_label("Cancel");
     cancelButton.connect("clicked", onCancel);

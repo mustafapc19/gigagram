@@ -30,7 +30,19 @@
   });
 
   this.Window = function Window(application) {
-    const header = Header({ onAddTab: showServices, onCancel: showTabs });
+    const header = Header({
+      onAddTab: showServices,
+      onCancel: showTabs,
+      onReload,
+      onPrevious,
+      onForward,
+    });
+
+    function onReload() {}
+
+    function onPrevious() {}
+
+    function onForward() {}
 
     // https://gjs-docs.gnome.org/gtk30~3.24.8/gtk.applicationwindow
     const window = new ApplicationWindow({
